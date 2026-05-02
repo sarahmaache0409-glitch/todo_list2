@@ -1,8 +1,6 @@
 from todo import*
 from sauvecharge import *
 
-todo_list: list[dict] = []
-
 def main()-> None:
     """Fonction principale du programme.
     Affiche un menu pour interagir avec la todo list et exécute les actions correspondantes en fonction du choix de l'utilisateur.
