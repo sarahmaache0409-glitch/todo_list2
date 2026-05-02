@@ -1,3 +1,5 @@
+todo_list: list[dict] = []
+
 def ajoute_tache(nom:str, date:str, priorite:int,todo_list:list[dict])->list[dict]:
     """Ajoute une tâche à la liste des tâches.
     Crée un dictionnaire représentant la tâche avec les informations fournies et l'ajoute à la liste.
