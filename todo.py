@@ -1,5 +1,3 @@
-todo_list: list[dict] = []
-
 def ajoute_tache(nom:str, date:str, priorite:int,todo_list:list[dict])->list[dict]:
     """Ajoute une tâche à la liste des tâches.
     Crée un dictionnaire représentant la tâche avec les informations fournies et l'ajoute à la liste.
@@ -43,20 +41,25 @@ def termine_tache(nom: str,todo_list:list[dict]) -> list[dict]:
             return todo_list
     return todo_list
 
-def tri_tache(todo_list:list[dict])->list[dict]:
-    """Affiche les tâches triées par priorité (de la plus élevée à la plus basse).
-    :param: liste des taches todo_list
-    return: la liste des taches non trié par ordre de priorité décroissante
-    rtype: list[dict]
-    """
+def tri_tache(todo_list: list[dict], par_date: bool = False) -> list[dict]:
+    """Trie les tâches par priorité décroissante ou par date croissante.
+    :param todo_list: La liste des tâches à trier.
+    :type todo_list: list[dict]
+    :param par_date: Si True, trie par date croissante, sinon par priorité décroissante.
+    :type par_date: bool
+    :return: La liste des tâches triée.
+    :rtype: list[dict]"""
     n: int = len(todo_list)
-    for droite in range(n-1,0,-1):
+    for droite in range(n-1, 0, -1):
         for gauche in range(droite):
-            if todo_list[gauche]["priorite"] < todo_list[gauche+1]["priorite"]:
+            if par_date:
+                if todo_list[gauche]["date"] > todo_list[gauche+1]["date"]:
+                    todo_list[gauche], todo_list[gauche+1] = todo_list[gauche+1], todo_list[gauche]
+            elif todo_list[gauche]["priorite"] < todo_list[gauche+1]["priorite"]:
                 todo_list[gauche], todo_list[gauche+1] = todo_list[gauche+1], todo_list[gauche]
     return todo_list
 
-def affiche_taches(todo_list: list[dict]) -> list[dict]:
+def affiche_taches_non_terminées(todo_list: list[dict]) -> list[dict]:
     """Retourne uniquement les tâches non terminées, déjà triées.
     :param todo_list: La liste des tâches à afficher qui ne sont pas finis mais triées.
     :type todo_list: list[dict]
@@ -65,14 +68,13 @@ def affiche_taches(todo_list: list[dict]) -> list[dict]:
     return [t for t in todo_list if t["etat"] == False]
 
 def cherche_taches_noms(todo_list: list[dict], mot:str)-> list[dict]:
-    """
-    Recherche  et renvoie les tâches dans la todo list dont le nom contient un mot donné  par l'utilisateur
-    param: la liste des taches todo et le mot recherché par l'utilisateur
-    type: todo:list[dict]
-           mot:str
-    return: liste des taches correspondant au mot donnée
-    rtype:list[dict]
-    """
+    """Recherche et renvoie les tâches dont le nom contient un mot donné.
+    :param todo_list: La liste des tâches à rechercher.
+    :type todo_list: list[dict]
+    :param mot: Le mot à rechercher dans les noms des tâches.
+    :type mot: str
+    :return: La liste des tâches dont le nom contient le mot.
+    :rtype: list[dict]"""
     resultat_nom: list[dict] = []
     for t in todo_list:
         if mot.lower() in t["nom"].lower():
@@ -80,11 +82,13 @@ def cherche_taches_noms(todo_list: list[dict], mot:str)-> list[dict]:
     return resultat_nom
 
 def cherche_taches_priorite(todo_list: list[dict], p: int) -> list[dict]:
-    """ recherche les taches ayant la priorité donnée par l'utilisateur et renvoie une liste des ces taches
-    param:liste des taches todo et la priorité recherchée p
-    type:list[dict] et p:int
-    return:liste des taches correspondant à la priorité
-    rtype: list[dict] """
+    """Recherche et renvoie les tâches ayant une priorité donnée.
+    :param todo_list: La liste des tâches à rechercher.
+    :type todo_list: list[dict]
+    :param p: La priorité recherchée (entre 1 et 5).
+    :type p: int
+    :return: La liste des tâches correspondant à la priorité donnée.
+    :rtype: list[dict]"""
     resultat_p: list[dict] = []
     for t in todo_list:
         if t["priorite"] == p:
