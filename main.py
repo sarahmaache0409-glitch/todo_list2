@@ -27,7 +27,7 @@ def main()-> None:
             nom: str = input("Entrez le nom de la tâche: ")
             priorite: int = int(input("Entrez la priorité de la tâche (1-5): "))
             date: str = input("Entrez la date aaaammjj: ")
-            ajoute_tache(nom, date, priorite, todo_list)
+            todo_list: list[dict] = ajoute_tache(nom, date, priorite, todo_list)
             todo_list: list[dict] = tri_tache(todo_list)
             print(f"Tâche '{nom}' ajoutée avec priorité {priorite} à la date {date}.")
             print(f"todo_list:{todo_list}")
@@ -45,12 +45,11 @@ def main()-> None:
             print(f"todo_list:{todo_list}")
 
         elif choix == "4":
-            todo_list: list[dict] = tri_tache(todo_list)
-            taches_triées: list[dict] = affiche_taches(todo_list)
-
-
-            print(f"Tâches triées par priorité:{taches_triées}")
-           
+            choix_tri: str = input("Trier par (1) priorité ou (2) date ? ")
+            par_date: bool = choix_tri == "2"
+            todo_list = tri_tache(todo_list, par_date)
+            taches_affichees: list[dict] = affiche_taches_non_terminées(todo_list)
+            print(f"Tâches triées : {taches_affichees}")
 
         elif choix == "5":
             mot: str = input("Entrez un mot à rechercher dans les noms des tâches: ")
